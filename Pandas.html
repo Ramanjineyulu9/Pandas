@@ -1,0 +1,444 @@
+import matplotlib.pyplot as plt
+import pandas as pd  
+import numpy as np  
+ts= pd.Series(np.random.randn(500), index=pd.date_range(1/2/2020, periods=500, freq="D"))
+ts = ts.cumsum()
+ts.plot()
+plt.show()
+
+
+import pandas as pd  
+df = pd.DataFrame(np.random.randn(8,2), columns=['A', 'B'])
+df
+A	B
+0	0.696391	0.038764
+1	-0.503506	-1.712250
+2	0.719668	-0.404717
+3	0.562511	-0.608011
+4	0.978376	-1.208491
+5	-0.916058	-0.173477
+6	0.047188	0.807346
+7	0.052107	0.307635
+df.dtypes
+A    float64
+B    float64
+dtype: object
+df.head()
+A	B
+0	-0.818177	0.013839
+1	0.565168	1.071469
+2	-0.760430	0.384265
+3	1.074573	-1.988063
+4	1.535436	0.535057
+df.tail()
+A	B
+3	1.074573	-1.988063
+4	1.535436	0.535057
+5	0.163879	2.584365
+6	1.758137	-1.004887
+7	-1.180123	1.317648
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.DataFrame(np.random.randn(8, 2), columns=['A', 'B'])
+plt.figure(figsize=(10, 6))
+plt.plot(df['A'], label='A', marker='o')
+plt.plot(df['B'], label='B', marker='x')
+plt.title('Line Plot of Columns A and B')
+plt.xlabel('Index')
+plt.ylabel('Values')
+plt.legend()
+plt.show()
+
+
+df.columns
+Index(['A', 'B'], dtype='object')
+#converting to diffrent formart
+df.to_numpy()
+array([[-0.82941473, -0.95593337],
+       [ 1.60570105, -2.22348203],
+       [ 1.05548711,  0.28642076],
+       [-0.63744502,  0.22048986],
+       [ 0.71434931, -0.6623825 ],
+       [-0.38079437,  0.79525762],
+       [-0.53037118,  0.59115845],
+       [-0.4992271 ,  1.23827644]])
+df.to_csv()
+',A,B\r\n0,-0.8294147305851721,-0.9559333733897991\r\n1,1.6057010531702187,-2.223482027582934\r\n2,1.0554871066917262,0.2864207610522781\r\n3,-0.6374450246596413,0.22048986349122188\r\n4,0.7143493118618041,-0.6623825010371271\r\n5,-0.38079437411394906,0.7952576233391006\r\n6,-0.5303711770179235,0.5911584545594464\r\n7,-0.4992271041319213,1.2382764394023646\r\n'
+df.describe()
+A	B
+count	8.000000	8.000000
+mean	0.062286	-0.088774
+std	0.921286	1.126262
+min	-0.829415	-2.223482
+25%	-0.557140	-0.735770
+50%	-0.440011	0.253455
+75%	0.799634	0.642183
+max	1.605701	1.238276
+df['B']
+0   -0.955933
+1   -2.223482
+2    0.286421
+3    0.220490
+4   -0.662383
+5    0.795258
+6    0.591158
+7    1.238276
+Name: B, dtype: float64
+df[0:4]
+A	B
+0	-0.829415	-0.955933
+1	1.605701	-2.223482
+2	1.055487	0.286421
+3	-0.637445	0.220490
+df.loc[[0,1,3], ['A','B']]
+A	B
+0	-0.829415	-0.955933
+1	1.605701	-2.223482
+3	-0.637445	0.220490
+df[(df['A']>0) & (df['B']>0)]
+A	B
+2	1.055487	0.286421
+df2 = df.reindex(index=df.index[0:4], columns=df.columns)
+df2
+A	B
+0	-0.829415	-0.955933
+1	1.605701	-2.223482
+2	1.055487	0.286421
+3	-0.637445	0.220490
+df2.isnull()
+A	B
+0	False	False
+1	False	False
+2	False	False
+3	False	False
+df2 = df.reindex(index=df.A[0:5], columns=df.columns)
+df2
+A	B
+A		
+-0.829415	NaN	NaN
+1.605701	NaN	NaN
+1.055487	NaN	NaN
+-0.637445	NaN	NaN
+0.714349	NaN	NaN
+df2.isnull()
+A	B
+A		
+-0.829415	True	True
+1.605701	True	True
+1.055487	True	True
+-0.637445	True	True
+0.714349	True	True
+df2.fillna(value=2)
+A	B
+A		
+-0.829415	2.0	2.0
+1.605701	2.0	2.0
+1.055487	2.0	2.0
+-0.637445	2.0	2.0
+0.714349	2.0	2.0
+df.mean()
+A    0.062286
+B   -0.088774
+dtype: float64
+s = pd.Series([1,2,3,np.nan,4,5,6,7,8,9], index=pd.date_range('20200301',periods=10))
+s
+2020-03-01    1.0
+2020-03-02    2.0
+2020-03-03    3.0
+2020-03-04    NaN
+2020-03-05    4.0
+2020-03-06    5.0
+2020-03-07    6.0
+2020-03-08    7.0
+2020-03-09    8.0
+2020-03-10    9.0
+Freq: D, dtype: float64
+df.sub(s, axis='index')
+A	B
+2020-03-01 00:00:00	NaN	NaN
+2020-03-02 00:00:00	NaN	NaN
+2020-03-03 00:00:00	NaN	NaN
+2020-03-04 00:00:00	NaN	NaN
+2020-03-05 00:00:00	NaN	NaN
+2020-03-06 00:00:00	NaN	NaN
+2020-03-07 00:00:00	NaN	NaN
+2020-03-08 00:00:00	NaN	NaN
+2020-03-09 00:00:00	NaN	NaN
+2020-03-10 00:00:00	NaN	NaN
+0	NaN	NaN
+1	NaN	NaN
+2	NaN	NaN
+3	NaN	NaN
+4	NaN	NaN
+5	NaN	NaN
+6	NaN	NaN
+7	NaN	NaN
+df.apply(lambda x: x.max() - x.min())
+A    2.435116
+B    3.461758
+dtype: float64
+df = pd.read_csv("C:/nodejs scripts/ram.csv.csv")
+df
+Year	Industry_aggregation_NZSIOC	Industry_code_NZSIOC	Industry_name_NZSIOC	Units	Variable_code	Variable_name	Variable_category	Value	Industry_code_ANZSIC06
+0	2023	Level 1	99999	All industries	Dollars (millions)	H01	Total income	Financial performance	930995	ANZSIC06 divisions A-S (excluding classes K633...
+1	2023	Level 1	99999	All industries	Dollars (millions)	H04	Sales, government funding, grants and subsidies	Financial performance	821630	ANZSIC06 divisions A-S (excluding classes K633...
+2	2023	Level 1	99999	All industries	Dollars (millions)	H05	Interest, dividends and donations	Financial performance	84354	ANZSIC06 divisions A-S (excluding classes K633...
+3	2023	Level 1	99999	All industries	Dollars (millions)	H07	Non-operating income	Financial performance	25010	ANZSIC06 divisions A-S (excluding classes K633...
+4	2023	Level 1	99999	All industries	Dollars (millions)	H08	Total expenditure	Financial performance	832964	ANZSIC06 divisions A-S (excluding classes K633...
+...	...	...	...	...	...	...	...	...	...	...
+50980	2013	Level 3	ZZ11	Food product manufacturing	Percentage	H37	Quick ratio	Financial ratios	52	ANZSIC06 groups C111, C112, C113, C114, C115, ...
+50981	2013	Level 3	ZZ11	Food product manufacturing	Percentage	H38	Margin on sales of goods for resale	Financial ratios	40	ANZSIC06 groups C111, C112, C113, C114, C115, ...
+50982	2013	Level 3	ZZ11	Food product manufacturing	Percentage	H39	Return on equity	Financial ratios	12	ANZSIC06 groups C111, C112, C113, C114, C115, ...
+50983	2013	Level 3	ZZ11	Food product manufacturing	Percentage	H40	Return on total assets	Financial ratios	5	ANZSIC06 groups C111, C112, C113, C114, C115, ...
+50984	2013	Level 3	ZZ11	Food product manufacturing	Percentage	H41	Liabilities structure	Financial ratios	46	ANZSIC06 groups C111, C112, C113, C114, C115, ...
+50985 rows × 10 columns
+
+df.describe()
+Year
+count	50985.000000
+mean	2018.000000
+std	3.162309
+min	2013.000000
+25%	2015.000000
+50%	2018.000000
+75%	2021.000000
+max	2023.000000
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv("C:/nodejs scripts/ram.csv.csv")
+plt.figure(figsize=(10, 6))
+plt.plot(df['Year'], label='A', marker='o')
+plt.plot(df['Value'], label='B', marker='x')
+plt.title('Line Plot of Columns year and value')
+plt.xlabel('Index')
+plt.ylabel('Values')
+plt.legend()
+plt.show()
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.DataFrame(np.random.randn(50, 2), columns=['A', 'B'])
+plt.figure(figsize=(8, 4))
+plt.plot(df['A'],  marker='o')
+plt.plot(df['B'], label='B', marker='o')
+plt.title('Line Plot of Columns A and B')
+plt.xlabel('Index')
+plt.ylabel('Values')
+plt.legend()
+plt.show()
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(0, 3*np.pi, 0.1)
+y = np.tan(x)
+
+plt.plot(x, y)
+plt.show()
+
+
+import matplotlib.pyplot as plt
+
+# Sample dataset
+categories = ['A', 'B', 'C', 'D', 'E']
+values = [10, 20, 15, 25, 30]
+
+# Create a bar graph
+plt.bar(categories, values, color='skyblue')
+
+# Add title and labels
+plt.title('Sample Bar Graph')
+plt.xlabel('Categories')
+plt.ylabel('Values')
+
+# Display the graph
+plt.show()
+
+
+import pandas as pd  
+import numpy as np
+df = pd.read_csv("C:/nodejs scripts/MentalHealthSurvey.csv")
+df
+gender	age	university	degree_level	degree_major	academic_year	cgpa	residential_status	campus_discrimination	sports_engagement	...	study_satisfaction	academic_workload	academic_pressure	financial_concerns	social_relationships	depression	anxiety	isolation	future_insecurity	stress_relief_activities
+0	Male	20	PU	Undergraduate	Data Science	2nd year	3.0-3.5	Off-Campus	No	No Sports	...	5	4	5	4	3	2	1	1	2	Religious Activities, Social Connections, Onli...
+1	Male	20	UET	Postgraduate	Computer Science	3rd year	3.0-3.5	Off-Campus	No	1-3 times	...	5	4	4	1	3	3	3	3	4	Online Entertainment
+2	Male	20	FAST	Undergraduate	Computer Science	3rd year	2.5-3.0	Off-Campus	No	1-3 times	...	5	5	5	3	4	2	3	3	1	Religious Activities, Sports and Fitness, Onli...
+3	Male	20	UET	Undergraduate	Computer Science	3rd year	2.5-3.0	On-Campus	No	No Sports	...	3	5	4	4	1	5	5	5	3	Online Entertainment
+4	Female	20	UET	Undergraduate	Computer Science	3rd year	3.0-3.5	Off-Campus	Yes	No Sports	...	3	5	5	2	3	5	5	4	4	Online Entertainment
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+82	Male	22	PU	Undergraduate	Information Technology	4th year	3.0-3.5	On-Campus	No	No Sports	...	4	3	1	4	4	2	3	1	2	Online Entertainment, Outdoor Activities, Sleep
+83	Female	22	COMSATS	Undergraduate	Software Engineering	4th year	3.5-4.0	Off-Campus	Yes	No Sports	...	5	5	5	5	1	5	5	5	5	Religious Activities, Sleep
+84	Male	21	PU	Undergraduate	Data Science	2nd year	2.0-2.5	Off-Campus	No	No Sports	...	5	4	2	4	3	1	2	1	1	Religious Activities, Sports and Fitness, Soci...
+85	Male	22	PU	Undergraduate	Data Science	2nd year	2.5-3.0	Off-Campus	No	No Sports	...	3	3	3	3	2	3	4	4	5	Sleep
+86	Female	19	PU	Undergraduate	Data Science	2nd year	3.5-4.0	On-Campus	No	4-6 times	...	4	4	4	3	4	2	2	1	3	Sports and Fitness
+87 rows × 21 columns
+
+import matplotlib.pyplot as plt 
+import pandas as pd  
+df = pd.read_csv("C:/nodejs scripts/MentalHealthSurvey.csv")
+plt.plot(df['age'], label='age',  marker='o')
+plt.plot(df['cgpa'], label='cgpa', marker='x')
+plt.title('Graph')
+plt.xlabel('Age')
+plt.ylabel('Cgpa')
+plt.legend()
+plt.show()
+
+
+import matplotlib.pyplot as plt 
+import pandas as pd  
+
+plt.plot(df['depression'], label='age',  marker='o')
+plt.plot(df['anxiety'], label='cgpa', marker='x')
+plt.title('Graph')
+plt.xlabel('Age')
+plt.ylabel('Cgpa')
+plt.legend()
+plt.show()
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("C:/nodejs scripts/MentalHealthSurvey.csv")
+print(df.head())
+print(df.describe())
+
+# Count the number of unique values in categorical columns
+   gender  age university   degree_level      degree_major academic_year  \
+0    Male   20         PU  Undergraduate      Data Science      2nd year   
+1    Male   20        UET   Postgraduate  Computer Science      3rd year   
+2    Male   20       FAST  Undergraduate  Computer Science      3rd year   
+3    Male   20        UET  Undergraduate  Computer Science      3rd year   
+4  Female   20        UET  Undergraduate  Computer Science      3rd year   
+
+      cgpa residential_status campus_discrimination sports_engagement  ...  \
+0  3.0-3.5         Off-Campus                    No         No Sports  ...   
+1  3.0-3.5         Off-Campus                    No         1-3 times  ...   
+2  2.5-3.0         Off-Campus                    No         1-3 times  ...   
+3  2.5-3.0          On-Campus                    No         No Sports  ...   
+4  3.0-3.5         Off-Campus                   Yes         No Sports  ...   
+
+  study_satisfaction  academic_workload   academic_pressure  \
+0                  5                   4                  5   
+1                  5                   4                  4   
+2                  5                   5                  5   
+3                  3                   5                  4   
+4                  3                   5                  5   
+
+   financial_concerns  social_relationships  depression  anxiety  isolation  \
+0                   4                     3           2        1          1   
+1                   1                     3           3        3          3   
+2                   3                     4           2        3          3   
+3                   4                     1           5        5          5   
+4                   2                     3           5        5          4   
+
+   future_insecurity                           stress_relief_activities  
+0                  2  Religious Activities, Social Connections, Onli...  
+1                  4                               Online Entertainment  
+2                  1  Religious Activities, Sports and Fitness, Onli...  
+3                  3                               Online Entertainment  
+4                  4                               Online Entertainment  
+
+[5 rows x 21 columns]
+             age  study_satisfaction  academic_workload   academic_pressure  \
+count  87.000000           87.000000           87.000000          87.000000   
+mean   19.942529            3.931034            3.885057           3.781609   
+std     1.623636            1.043174            0.854880           1.125035   
+min    17.000000            1.000000            2.000000           1.000000   
+25%    19.000000            3.000000            3.000000           3.000000   
+50%    20.000000            4.000000            4.000000           4.000000   
+75%    21.000000            5.000000            4.500000           5.000000   
+max    26.000000            5.000000            5.000000           5.000000   
+
+       financial_concerns  social_relationships  depression    anxiety  \
+count           87.000000             87.000000   87.000000  87.000000   
+mean             3.390805              2.781609    3.218391   3.218391   
+std              1.400634              1.175578    1.367609   1.297809   
+min              1.000000              1.000000    1.000000   1.000000   
+25%              2.500000              2.000000    2.000000   2.000000   
+50%              3.000000              3.000000    3.000000   3.000000   
+75%              5.000000              4.000000    4.000000   4.000000   
+max              5.000000              5.000000    5.000000   5.000000   
+
+       isolation  future_insecurity  
+count  87.000000          87.000000  
+mean    3.241379           3.011494  
+std     1.405682           1.385089  
+min     1.000000           1.000000  
+25%     2.000000           2.000000  
+50%     3.000000           3.000000  
+75%     4.500000           4.000000  
+max     5.000000           5.000000  
+print(df['gender'].value_counts())
+print(df['depression'].value_counts())
+print(df['anxiety'].value_counts())
+gender
+Male      63
+Female    24
+Name: count, dtype: int64
+depression
+3    21
+5    20
+4    19
+2    14
+1    13
+Name: count, dtype: int64
+anxiety
+4    23
+3    19
+2    18
+5    17
+1    10
+Name: count, dtype: int64
+plt.figure(figsize=(10, 6))
+sns.histplot(df['age'], bins=20, kde=True, color='blue')
+plt.title('Age Distribution')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(x='gender', y='academic_pressure', data=df)
+plt.title('Pressure')
+plt.xlabel('Gender')
+plt.ylabel('Academic_pressure')
+plt.show()
+
+
+plt.figure(figsize=(8, 5))
+sns.countplot(x='depression',hue='depression', data=df, palette='viridis', legend=True)
+plt.title('Depression')
+plt.xlabel('Times per Week')
+plt.ylabel('Count')
+plt.show()
+
+
+plt.figure(figsize=(8, 5))
+sns.countplot(x='anxiety',hue='anxiety', data=df,  legend=True)
+plt.title('Anxiety')
+plt.xlabel('Times per Week')
+plt.ylabel('Count')
+plt.show()
+
+
+numeric_df = df.select_dtypes(include='number')
+corr_matrix = numeric_df.corr()
+plt.figure(figsize=(10, 6))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+
+
+plt.figure(figsize=(8, 5))
+sns.scatterplot(x='age', y='academic_pressure', hue='anxiety', data=df, palette='Set3')
+plt.title('Age and Academic_Pressure by Anxiety Status')
+plt.xlabel('Age')
+plt.ylabel('Academic Pressure')
+plt.show()
